@@ -104,7 +104,6 @@ function mapStyle(theme: "dark" | "light") {
       },
     },
     layers: [
-      { id: "bg", type: "background" as const, paint: { "background-color": "var(--background)" } },
       { id: "basemap", type: "raster" as const, source: "basemap", paint: { "raster-opacity": theme === "dark" ? 0.85 : 0.92 } },
       { id: "labels", type: "raster" as const, source: "labels", paint: { "raster-opacity": theme === "dark" ? 0.6 : 0.72 } },
     ],
