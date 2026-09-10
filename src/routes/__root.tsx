@@ -13,6 +13,9 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { StoreProvider } from "@/state/store";
 import AppShell from "@/components/shell/AppShell";
+import { ThemeProvider } from "@/theme/ThemeProvider";
+
+const themeInitScript = `(function(){try{var t=localStorage.getItem('urbansense-theme');if(t!=='light'&&t!=='dark'&&t!=='system')t='dark';var r=t==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):t;var e=document.documentElement;e.classList.remove('dark','light');e.classList.add(r);e.dataset.theme=r;e.style.colorScheme=r}catch(e){document.documentElement.classList.add('dark')}})();`;
 
 function NotFoundComponent() {
   return (
@@ -105,8 +108,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <HeadContent />
       </head>
       <body>
@@ -121,13 +125,15 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <StoreProvider>
-        <AppShell>
-          {/* Required: nested routes render here. */}
-          <Outlet />
-        </AppShell>
-      </StoreProvider>
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <StoreProvider>
+          <AppShell>
+            {/* Required: nested routes render here. */}
+            <Outlet />
+          </AppShell>
+        </StoreProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { GeoPoint, Severity } from "@/lib/types";
 import { CITY } from "@/mock/geo";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/theme/ThemeProvider";
 
 export interface MapMarkerSpec {
   id: string;
@@ -81,6 +82,34 @@ function markerEl(m: MapMarkerSpec): HTMLElement {
   return el;
 }
 
+function mapStyle(theme: "dark" | "light") {
+  const prefix = theme === "dark" ? "dark" : "light";
+  return {
+    version: 8 as const,
+    sources: {
+      basemap: {
+        type: "raster" as const,
+        tiles: [
+          `https://a.basemaps.cartocdn.com/${prefix}_nolabels/{z}/{x}/{y}@2x.png`,
+          `https://b.basemaps.cartocdn.com/${prefix}_nolabels/{z}/{x}/{y}@2x.png`,
+          `https://c.basemaps.cartocdn.com/${prefix}_nolabels/{z}/{x}/{y}@2x.png`,
+        ],
+        tileSize: 256,
+        attribution: "© OpenStreetMap · © CARTO — DEMO DATA",
+      },
+      labels: {
+        type: "raster" as const,
+        tiles: [`https://a.basemaps.cartocdn.com/${prefix}_only_labels/{z}/{x}/{y}@2x.png`],
+        tileSize: 256,
+      },
+    },
+    layers: [
+      { id: "basemap", type: "raster" as const, source: "basemap", paint: { "raster-opacity": theme === "dark" ? 0.85 : 0.92 } },
+      { id: "labels", type: "raster" as const, source: "labels", paint: { "raster-opacity": theme === "dark" ? 0.6 : 0.72 } },
+    ],
+  };
+}
+
 export default function LiveMap({
   markers = [],
   lines = [],
@@ -92,9 +121,11 @@ export default function LiveMap({
   interactive = true,
   fitTo,
 }: Props) {
+  const { resolvedTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const libRef = useRef<any>(null);
+  const mapThemeRef = useRef<"dark" | "light" | null>(null);
   const markerRefs = useRef<Map<string, any>>(new Map());
   const [ready, setReady] = useState(false);
 
@@ -105,33 +136,11 @@ export default function LiveMap({
       const maplibregl = mod.default ?? mod;
       if (cancelled || !containerRef.current) return;
       libRef.current = maplibregl;
+      const initialMapTheme = document.documentElement.dataset["theme"] === "light" ? "light" : "dark";
+      mapThemeRef.current = initialMapTheme;
       const map = new maplibregl.Map({
         container: containerRef.current,
-        style: {
-          version: 8,
-          sources: {
-            basemap: {
-              type: "raster",
-              tiles: [
-                "https://a.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}@2x.png",
-                "https://b.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}@2x.png",
-                "https://c.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}@2x.png",
-              ],
-              tileSize: 256,
-              attribution: "© OpenStreetMap · © CARTO — DEMO DATA",
-            },
-            labels: {
-              type: "raster",
-              tiles: ["https://a.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}@2x.png"],
-              tileSize: 256,
-            },
-          },
-          layers: [
-            { id: "bg", type: "background", paint: { "background-color": "#0b1017" } },
-            { id: "basemap", type: "raster", source: "basemap", paint: { "raster-opacity": 0.85 } },
-            { id: "labels", type: "raster", source: "labels", paint: { "raster-opacity": 0.6 } },
-          ],
-        },
+        style: mapStyle(initialMapTheme),
         center: [center.lng, center.lat],
         zoom,
         attributionControl: { compact: true },
@@ -197,6 +206,30 @@ export default function LiveMap({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready || mapThemeRef.current === resolvedTheme) return;
+    mapThemeRef.current = resolvedTheme;
+    map.setStyle(mapStyle(resolvedTheme));
+    setReady(false);
+    map.once("style.load", () => {
+      map.addSource("us-lines", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+      map.addLayer({ id: "us-lines-glow", type: "line", source: "us-lines", paint: { "line-color": ["get", "color"], "line-width": ["*", ["get", "width"], 3], "line-opacity": 0.18, "line-blur": 6 } });
+      map.addLayer({ id: "us-lines-core", type: "line", source: "us-lines", paint: { "line-color": ["get", "color"], "line-width": ["get", "width"], "line-opacity": 0.9 } });
+      map.addSource("us-heat", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+      map.addLayer({
+        id: "us-heat-layer",
+        type: "heatmap",
+        source: "us-heat",
+        paint: {
+          "heatmap-weight": ["get", "weight"], "heatmap-intensity": 1.1, "heatmap-radius": 44, "heatmap-opacity": 0.65,
+          "heatmap-color": ["interpolate", ["linear"], ["heatmap-density"], 0, "rgba(0,0,0,0)", 0.25, "rgba(56,189,248,0.45)", 0.5, "rgba(250,204,21,0.55)", 0.75, "rgba(249,115,22,0.65)", 1, "rgba(239,68,68,0.8)"],
+        },
+      });
+      setReady(true);
+    });
+  }, [resolvedTheme]);
 
   /* markers */
   useEffect(() => {

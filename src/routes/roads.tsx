@@ -178,6 +178,7 @@ function RoadsPage() {
                   <Tooltip
                     contentStyle={{
                       background: "var(--popover)",
+                      color: "var(--popover-foreground)",
                       border: "1px solid var(--border)",
                       borderRadius: 4,
                       fontSize: 12,
