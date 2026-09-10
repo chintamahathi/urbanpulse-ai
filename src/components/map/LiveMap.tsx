@@ -137,7 +137,7 @@ export default function LiveMap({
       const maplibregl = mod.default ?? mod;
       if (cancelled || !containerRef.current) return;
       libRef.current = maplibregl;
-      const initialMapTheme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
+      const initialMapTheme = document.documentElement.dataset["theme"] === "light" ? "light" : "dark";
       mapThemeRef.current = initialMapTheme;
       const map = new maplibregl.Map({
         container: containerRef.current,
