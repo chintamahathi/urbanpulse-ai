@@ -172,6 +172,15 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  .recharts-default-tooltip {
+    color: var(--foreground) !important;
+  }
+
+  .recharts-tooltip-label,
+  .recharts-tooltip-item {
+    color: var(--foreground) !important;
+  }
+
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;

@@ -151,7 +151,7 @@ function TrafficPage() {
                 <XAxis dataKey="hour" tick={{ fill: "var(--muted-foreground)", fontSize: 9 }} stroke="var(--border)" interval={2} />
                 <YAxis tick={{ fill: "var(--muted-foreground)", fontSize: 10 }} stroke="var(--border)" />
                 <Tooltip
-                  contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 4, fontSize: 12 }}
+                  contentStyle={{ background: "var(--popover)", color: "var(--popover-foreground)", border: "1px solid var(--border)", borderRadius: 4, fontSize: 12 }}
                 />
                 <RBar
                   dataKey={view === "density" ? "vehicles" : "speed"}
@@ -174,7 +174,7 @@ function TrafficPage() {
                   ))}
                 </Pie>
                 <Tooltip
-                  contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 4, fontSize: 12 }}
+                  contentStyle={{ background: "var(--popover)", color: "var(--popover-foreground)", border: "1px solid var(--border)", borderRadius: 4, fontSize: 12 }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -230,7 +230,7 @@ function TrafficPage() {
                 <XAxis dataKey="day" tick={{ fill: "var(--muted-foreground)", fontSize: 9 }} stroke="var(--border)" />
                 <YAxis tick={{ fill: "var(--muted-foreground)", fontSize: 10 }} stroke="var(--border)" />
                 <Tooltip
-                  contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 4, fontSize: 12 }}
+                  contentStyle={{ background: "var(--popover)", color: "var(--popover-foreground)", border: "1px solid var(--border)", borderRadius: 4, fontSize: 12 }}
                 />
                 <Line type="monotone" dataKey="hotspots" stroke="var(--intel)" strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="avgDelay" stroke="var(--critical)" strokeWidth={2} dot={false} />

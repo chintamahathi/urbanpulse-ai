@@ -42,7 +42,7 @@ export const Route = createFileRoute("/analytics")({
 
 const AXIS = { fill: "var(--muted-foreground)", fontSize: 10 };
 const TIP = {
-  contentStyle: { background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 4, fontSize: 12 },
+  contentStyle: { background: "var(--popover)", color: "var(--popover-foreground)", border: "1px solid var(--border)", borderRadius: 4, fontSize: 12 },
 };
 
 function AnalyticsPage() {

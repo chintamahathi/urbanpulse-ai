@@ -126,6 +126,7 @@ export default function LiveMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
   const libRef = useRef<any>(null);
+  const mapThemeRef = useRef<"dark" | "light" | null>(null);
   const markerRefs = useRef<Map<string, any>>(new Map());
   const [ready, setReady] = useState(false);
 
@@ -136,9 +137,11 @@ export default function LiveMap({
       const maplibregl = mod.default ?? mod;
       if (cancelled || !containerRef.current) return;
       libRef.current = maplibregl;
+      const initialMapTheme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
+      mapThemeRef.current = initialMapTheme;
       const map = new maplibregl.Map({
         container: containerRef.current,
-        style: mapStyle(resolvedTheme),
+        style: mapStyle(initialMapTheme),
         center: [center.lng, center.lat],
         zoom,
         attributionControl: { compact: true },
@@ -207,7 +210,8 @@ export default function LiveMap({
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !ready) return;
+    if (!map || !ready || mapThemeRef.current === resolvedTheme) return;
+    mapThemeRef.current = resolvedTheme;
     map.setStyle(mapStyle(resolvedTheme));
     setReady(false);
     map.once("style.load", () => {
