@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Plug, SlidersHorizontal } from "lucide-react";
+import { Check, Monitor, Moon, Plug, SlidersHorizontal, Sun } from "lucide-react";
 import { DemoTag, PageHeader, PanelHeader, SeverityBadge } from "@/components/kit/primitives";
+import { Button } from "@/components/ui/button";
 import { useStore } from "@/state/store";
 import { cn } from "@/lib/utils";
+import { useTheme, type ThemePreference } from "@/theme/ThemeProvider";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -53,8 +55,20 @@ const SOURCES = [
   ["City copilot model", "Natural-language reasoning layer", "MOCK"],
 ] as const;
 
+const THEMES: Array<{
+  value: ThemePreference;
+  label: string;
+  description: string;
+  icon: typeof Sun;
+}> = [
+  { value: "light", label: "Light", description: "Clean and bright", icon: Sun },
+  { value: "dark", label: "Dark", description: "Focused command-center mode", icon: Moon },
+  { value: "system", label: "System", description: "Follow device preference", icon: Monitor },
+];
+
 function SettingsPage() {
   const { live, setLive } = useStore();
+  const { theme, setTheme } = useTheme();
   const [alerts, setAlerts] = useState(true);
   const [sound, setSound] = useState(false);
   const [autoFocus, setAutoFocus] = useState(true);
@@ -70,6 +84,42 @@ function SettingsPage() {
       />
 
       <div className="grid gap-3 p-5 xl:grid-cols-2">
+        <div className="panel h-fit xl:col-span-2">
+          <PanelHeader title="appearance" subtitle="Choose how UrbanSense AI looks" icon={<Sun className="h-3.5 w-3.5" />} />
+          <div className="grid gap-2 p-4 md:grid-cols-3" role="radiogroup" aria-label="Appearance theme">
+            {THEMES.map(({ value, label, description, icon: Icon }) => {
+              const selected = theme === value;
+              return (
+                <Button
+                  key={value}
+                  type="button"
+                  variant="outline"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => setTheme(value)}
+                  className={cn(
+                    "h-auto min-h-16 justify-start rounded-sm px-3 py-3 text-left shadow-none transition-colors",
+                    selected
+                      ? "border-intel/60 bg-intel/10 text-foreground hover:bg-intel/10"
+                      : "border-border bg-panel-raised/30 text-foreground hover:border-intel/40 hover:bg-panel-raised/60",
+                  )}
+                >
+                  <span className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-sm border", selected ? "border-intel/40 bg-intel/10 text-intel" : "border-border bg-panel text-muted-foreground")}>
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[13px] font-medium">{label}</span>
+                    <span className="block text-[11px] font-normal text-muted-foreground">{description}</span>
+                  </span>
+                  <span className={cn("flex h-5 w-5 shrink-0 items-center justify-center rounded-full border", selected ? "border-intel bg-intel text-primary-foreground" : "border-border text-transparent")}>
+                    <Check className="h-3 w-3" />
+                  </span>
+                </Button>
+              );
+            })}
+          </div>
+        </div>
+
         <div className="panel h-fit">
           <PanelHeader title="simulation & alerts" icon={<SlidersHorizontal className="h-3.5 w-3.5" />} />
           <div className="space-y-2 p-4">
