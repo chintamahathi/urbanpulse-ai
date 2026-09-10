@@ -43,7 +43,7 @@ export default function TopBar() {
       className="relative z-20 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-panel px-3 xl:gap-3 xl:px-4"
     >
       {/* left */}
-      <div className="flex h-9 min-w-32 shrink-0 items-center gap-2 xl:min-w-40 xl:gap-3">
+      <div className="flex h-9 w-36 shrink-0 items-center gap-2 overflow-hidden xl:w-40 xl:gap-3">
         <div className="flex min-w-0 flex-col justify-center leading-none">
           <div className="truncate whitespace-nowrap font-mono text-[11px] tracking-[0.18em] uppercase">{CITY.name}</div>
           <div className="mt-1 flex min-w-0 items-center gap-1.5">
@@ -57,7 +57,7 @@ export default function TopBar() {
       </div>
 
       {/* center: search */}
-      <div className="relative min-w-28 flex-1 xl:max-w-xl">
+      <div className="relative min-w-20 flex-1 xl:max-w-xl">
         <Search className="pointer-events-none absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
         <input
           value={query}
@@ -113,7 +113,7 @@ export default function TopBar() {
           {live ? "live" : "paused"}
         </Button>
 
-        <span className="metric hidden min-w-[4.5rem] whitespace-nowrap text-center text-sm sm:inline-block">{now}</span>
+        <span className="metric hidden min-w-[4.5rem] whitespace-nowrap text-center text-sm lg:inline-block">{now}</span>
 
         <div className="relative flex h-8 w-8 shrink-0 items-center justify-center">
           <Button
