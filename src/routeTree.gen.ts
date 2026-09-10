@@ -10,12 +10,37 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnalyticsRouteImport } from './routes/analytics'
+import { Route as CopilotRouteImport } from './routes/copilot'
+import { Route as DemoRouteImport } from './routes/demo'
 import { Route as EdgeAiRouteImport } from './routes/edge-ai'
 import { Route as FleetRouteImport } from './routes/fleet'
+import { Route as FusionRouteImport } from './routes/fusion'
+import { Route as InfrastructureRouteImport } from './routes/infrastructure'
+import { Route as MaintenanceRouteImport } from './routes/maintenance'
+import { Route as RoadsRouteImport } from './routes/roads'
+import { Route as SafetyRouteImport } from './routes/safety'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as TrafficRouteImport } from './routes/traffic'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyticsRoute = AnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CopilotRoute = CopilotRouteImport.update({
+  id: '/copilot',
+  path: '/copilot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EdgeAiRoute = EdgeAiRouteImport.update({
@@ -28,35 +53,150 @@ const FleetRoute = FleetRouteImport.update({
   path: '/fleet',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FusionRoute = FusionRouteImport.update({
+  id: '/fusion',
+  path: '/fusion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InfrastructureRoute = InfrastructureRouteImport.update({
+  id: '/infrastructure',
+  path: '/infrastructure',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MaintenanceRoute = MaintenanceRouteImport.update({
+  id: '/maintenance',
+  path: '/maintenance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoadsRoute = RoadsRouteImport.update({
+  id: '/roads',
+  path: '/roads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SafetyRoute = SafetyRouteImport.update({
+  id: '/safety',
+  path: '/safety',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrafficRoute = TrafficRouteImport.update({
+  id: '/traffic',
+  path: '/traffic',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/copilot': typeof CopilotRoute
+  '/demo': typeof DemoRoute
   '/edge-ai': typeof EdgeAiRoute
   '/fleet': typeof FleetRoute
+  '/fusion': typeof FusionRoute
+  '/infrastructure': typeof InfrastructureRoute
+  '/maintenance': typeof MaintenanceRoute
+  '/roads': typeof RoadsRoute
+  '/safety': typeof SafetyRoute
+  '/settings': typeof SettingsRoute
+  '/traffic': typeof TrafficRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/copilot': typeof CopilotRoute
+  '/demo': typeof DemoRoute
   '/edge-ai': typeof EdgeAiRoute
   '/fleet': typeof FleetRoute
+  '/fusion': typeof FusionRoute
+  '/infrastructure': typeof InfrastructureRoute
+  '/maintenance': typeof MaintenanceRoute
+  '/roads': typeof RoadsRoute
+  '/safety': typeof SafetyRoute
+  '/settings': typeof SettingsRoute
+  '/traffic': typeof TrafficRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/copilot': typeof CopilotRoute
+  '/demo': typeof DemoRoute
   '/edge-ai': typeof EdgeAiRoute
   '/fleet': typeof FleetRoute
+  '/fusion': typeof FusionRoute
+  '/infrastructure': typeof InfrastructureRoute
+  '/maintenance': typeof MaintenanceRoute
+  '/roads': typeof RoadsRoute
+  '/safety': typeof SafetyRoute
+  '/settings': typeof SettingsRoute
+  '/traffic': typeof TrafficRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/edge-ai' | '/fleet'
+  fullPaths:
+    | '/'
+    | '/analytics'
+    | '/copilot'
+    | '/demo'
+    | '/edge-ai'
+    | '/fleet'
+    | '/fusion'
+    | '/infrastructure'
+    | '/maintenance'
+    | '/roads'
+    | '/safety'
+    | '/settings'
+    | '/traffic'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/edge-ai' | '/fleet'
-  id: '__root__' | '/' | '/edge-ai' | '/fleet'
+  to:
+    | '/'
+    | '/analytics'
+    | '/copilot'
+    | '/demo'
+    | '/edge-ai'
+    | '/fleet'
+    | '/fusion'
+    | '/infrastructure'
+    | '/maintenance'
+    | '/roads'
+    | '/safety'
+    | '/settings'
+    | '/traffic'
+  id:
+    | '__root__'
+    | '/'
+    | '/analytics'
+    | '/copilot'
+    | '/demo'
+    | '/edge-ai'
+    | '/fleet'
+    | '/fusion'
+    | '/infrastructure'
+    | '/maintenance'
+    | '/roads'
+    | '/safety'
+    | '/settings'
+    | '/traffic'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnalyticsRoute: typeof AnalyticsRoute
+  CopilotRoute: typeof CopilotRoute
+  DemoRoute: typeof DemoRoute
   EdgeAiRoute: typeof EdgeAiRoute
   FleetRoute: typeof FleetRoute
+  FusionRoute: typeof FusionRoute
+  InfrastructureRoute: typeof InfrastructureRoute
+  MaintenanceRoute: typeof MaintenanceRoute
+  RoadsRoute: typeof RoadsRoute
+  SafetyRoute: typeof SafetyRoute
+  SettingsRoute: typeof SettingsRoute
+  TrafficRoute: typeof TrafficRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -66,6 +206,27 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analytics': {
+      id: '/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/copilot': {
+      id: '/copilot'
+      path: '/copilot'
+      fullPath: '/copilot'
+      preLoaderRoute: typeof CopilotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/edge-ai': {
@@ -82,13 +243,72 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FleetRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fusion': {
+      id: '/fusion'
+      path: '/fusion'
+      fullPath: '/fusion'
+      preLoaderRoute: typeof FusionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/infrastructure': {
+      id: '/infrastructure'
+      path: '/infrastructure'
+      fullPath: '/infrastructure'
+      preLoaderRoute: typeof InfrastructureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/maintenance': {
+      id: '/maintenance'
+      path: '/maintenance'
+      fullPath: '/maintenance'
+      preLoaderRoute: typeof MaintenanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roads': {
+      id: '/roads'
+      path: '/roads'
+      fullPath: '/roads'
+      preLoaderRoute: typeof RoadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/safety': {
+      id: '/safety'
+      path: '/safety'
+      fullPath: '/safety'
+      preLoaderRoute: typeof SafetyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/traffic': {
+      id: '/traffic'
+      path: '/traffic'
+      fullPath: '/traffic'
+      preLoaderRoute: typeof TrafficRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnalyticsRoute: AnalyticsRoute,
+  CopilotRoute: CopilotRoute,
+  DemoRoute: DemoRoute,
   EdgeAiRoute: EdgeAiRoute,
   FleetRoute: FleetRoute,
+  FusionRoute: FusionRoute,
+  InfrastructureRoute: InfrastructureRoute,
+  MaintenanceRoute: MaintenanceRoute,
+  RoadsRoute: RoadsRoute,
+  SafetyRoute: SafetyRoute,
+  SettingsRoute: SettingsRoute,
+  TrafficRoute: TrafficRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

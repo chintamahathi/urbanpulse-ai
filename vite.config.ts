@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    // maplibre-gl ships its own web worker; the dep optimizer cannot pre-bundle it.
+    optimizeDeps: { exclude: ["maplibre-gl"] },
+  },
 });

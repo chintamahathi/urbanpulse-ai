@@ -84,13 +84,13 @@ export const SEVERITY_ORDER: Record<Severity, number> = {
 
 /** Interpolate along a polyline at t in [0,1). */
 export function pointOnPath(path: GeoPoint[], t: number): { point: GeoPoint; heading: number } {
-  if (path.length < 2) return { point: path[0], heading: 0 };
+  if (path.length < 2) return { point: path[0]!, heading: 0 };
   const total = path.length - 1;
   const scaled = (t % 1) * total;
   const i = Math.min(Math.floor(scaled), total - 1);
   const f = scaled - i;
-  const a = path[i];
-  const b = path[i + 1];
+  const a = path[i]!;
+  const b = path[i + 1]!;
   const point = { lat: a.lat + (b.lat - a.lat) * f, lng: a.lng + (b.lng - a.lng) * f };
   const heading = (Math.atan2(b.lng - a.lng, b.lat - a.lat) * 180) / Math.PI;
   return { point, heading };

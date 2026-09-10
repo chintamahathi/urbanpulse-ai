@@ -52,7 +52,7 @@ const BASE_BOXES: Box[] = [
 
 function EdgeAiPage() {
   const { monitorBusId, setMonitorBus, buses, events, live } = useStore();
-  const bus = buses.find((b) => b.id === monitorBusId) ?? buses[0];
+  const bus = buses.find((b) => b.id === monitorBusId) ?? buses[0]!;
   const [frame, setFrame] = useState(0);
   const [camera, setCamera] = useState<"FRONT" | "SIDE" | "REAR" | "CABIN">("FRONT");
 

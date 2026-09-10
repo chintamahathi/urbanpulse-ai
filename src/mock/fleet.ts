@@ -18,8 +18,8 @@ const CORRIDORS: [string, string, string][] = [
 
 function buildPath(from: string, to: string, seed: number): GeoPoint[] {
   const r = rng(seed);
-  const a = AREA_POINTS[from];
-  const b = AREA_POINTS[to];
+  const a = AREA_POINTS[from]!;
+  const b = AREA_POINTS[to]!;
   const mid1 = jitter({ lat: (a.lat * 2 + b.lat) / 3, lng: (a.lng * 2 + b.lng) / 3 }, 0.03, r);
   const mid2 = jitter({ lat: (a.lat + b.lat * 2) / 3, lng: (a.lng + b.lng * 2) / 3 }, 0.03, r);
   return [a, mid1, mid2, b, mid2, mid1];
@@ -45,7 +45,7 @@ export const FLEET_ONLINE = 1248;
 
 export const buses: Bus[] = Array.from({ length: 24 }, (_, i) => {
   const r = rng(4200 + i);
-  const route = routes[i % routes.length];
+  const route = routes[i % routes.length]!;
   const t = r();
   const { point, heading } = pointOnPath(route.path, t);
   const camerasOnline = r() > 0.88 ? 3 : 4;
@@ -54,7 +54,7 @@ export const buses: Bus[] = Array.from({ length: 24 }, (_, i) => {
     id: `BUS-${101 + i * 4}`,
     routeId: route.id,
     routeCode: route.code,
-    area: AREAS[i % AREAS.length],
+    area: AREAS[i % AREAS.length]!,
     position: point,
     heading,
     speedKph: Math.round(12 + r() * 44),

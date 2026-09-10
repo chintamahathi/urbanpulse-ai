@@ -65,10 +65,10 @@ export function PanelHeader({
   className,
 }: {
   title: string;
-  subtitle?: string;
+  subtitle?: string | undefined;
   right?: ReactNode;
   icon?: ReactNode;
-  className?: string;
+  className?: string | undefined;
 }) {
   return (
     <div className={cn("flex items-center justify-between gap-3 border-b border-border px-4 py-2.5", className)}>

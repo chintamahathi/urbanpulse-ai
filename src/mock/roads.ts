@@ -23,7 +23,7 @@ const DEF: [string, string, number, string][] = [
 
 export const roads: RoadSegment[] = DEF.map(([name, area, health, nearby], i) => {
   const r = rng(7100 + i);
-  const base = AREA_POINTS[area];
+  const base = AREA_POINTS[area as string]!;
   const path = [jitter(base, 0.02, r), jitter(base, 0.03, r), jitter(base, 0.04, r)];
   const decay = (100 - health) / MONTHS.length;
   const timeline = MONTHS.map((month, m) => ({
