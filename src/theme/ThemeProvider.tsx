@@ -32,15 +32,8 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemePreference>(() => {
-    if (typeof window === "undefined") return "dark";
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    return isThemePreference(stored) ? stored : "dark";
-  });
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => {
-    if (typeof document === "undefined") return "dark";
-    return document.documentElement.dataset["theme"] === "light" ? "light" : "dark";
-  });
+  const [theme, setThemeState] = useState<ThemePreference>("dark");
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("dark");
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
