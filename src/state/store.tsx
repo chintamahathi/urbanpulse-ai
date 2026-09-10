@@ -161,7 +161,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
       setBuses((prev) =>
         prev.map((bus, i) => {
-          const route = routes.find((r) => r.id === bus.routeId) ?? routes[0];
+          const route = routes.find((r) => r.id === bus.routeId) ?? routes[0]!;
           const advance = 0.0035 + (i % 5) * 0.0009;
           const nextIndex = (bus.pathIndex + advance) % 1;
           const { point, heading } = pointOnPath(route.path, nextIndex);
@@ -191,9 +191,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
       if (n % 2 === 0) {
         const r = rng(n * 17);
-        const tpl = NEW_EVENT_TEMPLATES[Math.floor(r() * NEW_EVENT_TEMPLATES.length)];
-        const road = roads[Math.floor(r() * roads.length)];
-        const bus = seedBuses[Math.floor(r() * seedBuses.length)];
+        const tpl = NEW_EVENT_TEMPLATES[Math.floor(r() * NEW_EVENT_TEMPLATES.length)]!;
+        const road = roads[Math.floor(r() * roads.length)]!;
+        const bus = seedBuses[Math.floor(r() * seedBuses.length)]!;
         const id = `${tpl.type === "pothole" ? "PTH" : "EVT"}-${9000 + n}`;
         const fresh: UrbanEvent = {
           ...tpl,
@@ -201,7 +201,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           confidence: +(0.8 + r() * 0.19).toFixed(2),
           busId: bus.id,
           camera: "front",
-          position: { lat: road.path[1].lat + (r() - 0.5) * 0.01, lng: road.path[1].lng + (r() - 0.5) * 0.01 },
+          position: { lat: road.path[1]!.lat + (r() - 0.5) * 0.01, lng: road.path[1]!.lng + (r() - 0.5) * 0.01 },
           location: `${road.name}, ${road.area}`,
           roadId: road.id,
           timestamp: new Date().toISOString(),
@@ -253,7 +253,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setMaintenanceStatus = useCallback((id: string, status: EventStatus, assignee?: string) => {
-    setMaintenance((prev) => prev.map((m) => (m.id === id ? { ...m, status, assignee: assignee ?? m.assignee } : m)));
+    setMaintenance((prev) => prev.map((m) => (m.id === id ? { ...m, status, ...(assignee ? { assignee } : {}) } : m)));
   }, []);
 
   const setInfraStatus = useCallback((id: string, status: EventStatus) => {

@@ -101,7 +101,8 @@ export default function LiveMap({
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const maplibregl = (await import("maplibre-gl")).default;
+      const mod: any = await import("maplibre-gl");
+      const maplibregl = mod.default ?? mod;
       if (cancelled || !containerRef.current) return;
       libRef.current = maplibregl;
       const map = new maplibregl.Map({

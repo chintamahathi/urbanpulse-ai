@@ -52,7 +52,7 @@ export const copilotAnswers: CopilotAnswer[] = [
     cards: [
       { label: "Verified clusters", value: "9", tone: "high" },
       { label: "Top cluster", value: "PTH-1024", tone: "intel" },
-      { label: "Confidence", value: "99.1%", tone: "ok" },
+      { label: "Confidence", value: "99.1%", tone: "low" },
     ],
     focusRoadId: "RD-1000",
   },

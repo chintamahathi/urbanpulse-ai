@@ -52,14 +52,14 @@ function stamp(minutesAgo: number) {
 
 export const seedEvents: UrbanEvent[] = Array.from({ length: 58 }, (_, i) => {
   const r = rng(9100 + i);
-  const type = TYPES[i % TYPES.length];
-  const road = roads[i % roads.length];
-  const bus = buses[(i * 5) % buses.length];
+  const type = TYPES[i % TYPES.length]!;
+  const road = roads[i % roads.length]!;
+  const bus = buses[(i * 5) % buses.length]!;
   const rv = r();
   const severity = severityFor(type, rv);
   const observations = 1 + Math.floor(r() * 36);
   const observers = Array.from(
-    new Set(Array.from({ length: Math.min(observations, 6) }, () => buses[Math.floor(r() * buses.length)].id)),
+    new Set(Array.from({ length: Math.min(observations, 6) }, () => buses[Math.floor(r() * buses.length)]!.id)),
   );
   const minutesAgo = +(i * 3.4 + r() * 4).toFixed(1);
   return {
@@ -69,8 +69,8 @@ export const seedEvents: UrbanEvent[] = Array.from({ length: 58 }, (_, i) => {
     severity,
     confidence: +(0.78 + r() * 0.21).toFixed(2),
     busId: bus.id,
-    camera: CAMERAS[i % CAMERAS.length],
-    position: jitter(road.path[1], 0.012, r),
+    camera: CAMERAS[i % CAMERAS.length]!,
+    position: jitter(road.path[1]!, 0.012, r),
     location: `${road.name}, ${road.area}`,
     roadId: road.id,
     timestamp: stamp(minutesAgo),

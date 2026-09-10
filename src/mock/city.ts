@@ -39,8 +39,8 @@ const VEHICLES = [
 
 export const seedIncidents: Incident[] = INCIDENT_TYPES.map(([type, sev], i) => {
   const r = rng(3300 + i);
-  const road = roads[(i * 3) % roads.length];
-  const base = road.path[1];
+  const road = roads[(i * 3) % roads.length]!;
+  const base = road.path[1]!;
   const minutesAgo = +(2 + i * 3.6 + r() * 3).toFixed(0);
   return {
     id: `INC-${2930 + i}`,
@@ -52,14 +52,14 @@ export const seedIncidents: Incident[] = INCIDENT_TYPES.map(([type, sev], i) => 
       .slice(11, 19),
     location: `${road.name}, ${road.area}`,
     position: jitter(base, 0.01, r),
-    vehicle: VEHICLES[i % VEHICLES.length],
+    vehicle: VEHICLES[i % VEHICLES.length]!,
     registration: `TS ${10 + i} ${String.fromCharCode(65 + i)}${String.fromCharCode(70 + i)} ${1200 + i * 37}`,
     ocrConfidence: +(0.84 + r() * 0.14).toFixed(2),
     aiMatch: +(0.8 + r() * 0.18).toFixed(2),
-    direction: ["NORTH EAST", "SOUTH", "WEST", "NORTH WEST", "EAST"][i % 5],
+    direction: ["NORTH EAST", "SOUTH", "WEST", "NORTH WEST", "EAST"][i % 5]!,
     track: Array.from({ length: 6 }, (_, k) => jitter(base, 0.004 * (k + 1), r)),
     observations: [0, 1, 2].map((k) => ({
-      busId: buses[(i + k * 4) % buses.length].id,
+      busId: buses[(i + k * 4) % buses.length]!.id,
       time: new Date(Date.UTC(2026, 8, 10, 7, 5) - (minutesAgo - k) * 60_000)
         .toISOString()
         .slice(11, 16),
@@ -107,15 +107,15 @@ const RECO: Record<InfrastructureIssue["type"], string> = {
 
 export const seedInfrastructure: InfrastructureIssue[] = Array.from({ length: 22 }, (_, i) => {
   const r = rng(5500 + i);
-  const road = roads[i % roads.length];
-  const type = INFRA_TYPES[i % INFRA_TYPES.length];
+  const road = roads[i % roads.length]!;
+  const type = INFRA_TYPES[i % INFRA_TYPES.length]!;
   const score = 40 + Math.round(r() * 55);
   return {
     id: `INF-${400 + i}`,
     road: road.name,
     type,
     severity: i % 7 === 0 ? "critical" : severityFromScore(score),
-    position: jitter(road.path[2], 0.01, r),
+    position: jitter(road.path[2]!, 0.01, r),
     detected: `${type} — ${Math.round(2 + r() * 30)} fleet observations`,
     expected: EXPECTED[type],
     risk: RISK[type],
@@ -141,7 +141,7 @@ export const pedestrianZones: PedestrianZone[] = roads.slice(0, 12).map((road, i
     name: `${road.name} zone`,
     riskScore: Math.min(99, score),
     severity: severityFromScore(score),
-    position: jitter(road.path[0], 0.008, r),
+    position: jitter(road.path[0]!, 0.008, r),
     nearby: road.nearby,
     nearMisses: road.nearMisses,
   } satisfies PedestrianZone;
@@ -181,7 +181,7 @@ export const trafficHotspots: TrafficHotspot[] = HOTSPOT_AREAS.map((name, i) => 
     delayMin: Math.max(3, delay),
     densityIndex: Math.max(30, density),
     avgSpeedKph: Math.max(8, Math.round(14 + i * 1.4 + r() * 6)),
-    position: jitter(AREA_POINTS[name] ?? AREA_POINTS["Ameerpet"], 0.02, r),
+    position: jitter(AREA_POINTS[name] ?? AREA_POINTS["Ameerpet"]!, 0.02, r),
   } satisfies TrafficHotspot;
 });
 
@@ -243,12 +243,12 @@ export const fusionCluster: FusionCluster = {
   severity: "high",
   firstObserved: "JAN 12",
   lastConfirmed: "SEP 10",
-  position: roads[0].path[1],
+  position: roads[0]!.path[1]!,
   points: Array.from({ length: 11 }, (_, i) => {
     const r = rng(770 + i);
     return {
-      busId: buses[(i * 2) % buses.length].id,
-      position: jitter(roads[0].path[1], 0.004, r),
+      busId: buses[(i * 2) % buses.length]!.id,
+      position: jitter(roads[0]!.path[1]!, 0.004, r),
       time: `08:${String(12 + i * 3).padStart(2, "0")}`,
       confidence: +(0.82 + r() * 0.16).toFixed(2),
     };
