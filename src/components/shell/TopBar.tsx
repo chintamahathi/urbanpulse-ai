@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Bell, Bot, Check, Pause, Play, Search, UserRound } from "lucide-react";
+import { Bell, Bot, Check, ChevronDown, Pause, Play, Search, UserRound } from "lucide-react";
 import { DemoTag, SeverityBadge, StatusDot } from "@/components/kit/primitives";
+import { Button } from "@/components/ui/button";
 import { useStore } from "@/state/store";
 import { CITY, formatClock, relTime } from "@/mock/geo";
 import { cn } from "@/lib/utils";
@@ -37,14 +38,17 @@ export default function TopBar() {
   const unread = notifications.filter((n) => !n.read).length;
 
   return (
-    <header ref={wrapRef} className="relative z-20 flex h-14 shrink-0 items-center gap-3 border-b border-border bg-panel px-4">
+    <header
+      ref={wrapRef}
+      className="relative z-20 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-panel px-3 xl:gap-3 xl:px-4"
+    >
       {/* left */}
-      <div className="flex min-w-0 items-center gap-3">
-        <div className="min-w-0">
-          <div className="truncate font-mono text-[11px] tracking-[0.18em] uppercase">{CITY.name}</div>
-          <div className="flex items-center gap-1.5">
-            <StatusDot sev={live ? "low" : "medium"} />
-            <span className="font-mono text-[9px] tracking-[0.14em] text-muted-foreground uppercase">
+      <div className="flex h-9 w-36 shrink-0 items-center gap-2 overflow-hidden xl:w-40 xl:gap-3">
+        <div className="flex min-w-0 flex-col justify-center leading-none">
+          <div className="truncate whitespace-nowrap font-mono text-[11px] tracking-[0.18em] uppercase">{CITY.name}</div>
+          <div className="mt-1 flex min-w-0 items-center gap-1.5">
+            <StatusDot sev={live ? "low" : "medium"} className="shrink-0" />
+            <span className="truncate whitespace-nowrap font-mono text-[9px] tracking-[0.14em] text-muted-foreground uppercase">
               {live ? "live telemetry streaming" : "telemetry paused"}
             </span>
           </div>
@@ -53,7 +57,7 @@ export default function TopBar() {
       </div>
 
       {/* center: search */}
-      <div className="relative mx-auto w-full max-w-xl">
+      <div className="relative min-w-20 flex-1 xl:max-w-xl">
         <Search className="pointer-events-none absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
         <input
           value={query}
@@ -94,34 +98,39 @@ export default function TopBar() {
       </div>
 
       {/* right */}
-      <div className="flex shrink-0 items-center gap-2">
-        <button
+      <div className="flex h-9 shrink-0 items-center gap-1.5 xl:gap-2">
+        <Button
           type="button"
+          variant="outline"
+          size="sm"
           onClick={() => setLive(!live)}
           className={cn(
-            "flex items-center gap-1.5 rounded-sm border px-2 py-1.5 font-mono text-[10px] tracking-[0.14em] uppercase transition-colors",
+            "h-8 gap-1.5 rounded-sm px-2 font-mono text-[10px] tracking-[0.14em] uppercase shadow-none",
             live ? "border-ok/40 bg-ok/10 text-ok" : "border-warn/40 bg-warn/10 text-warn",
           )}
         >
           {live ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
           {live ? "live" : "paused"}
-        </button>
+        </Button>
 
-        <span className="metric hidden text-sm sm:inline">{now}</span>
+        <span className="metric hidden min-w-[4.5rem] whitespace-nowrap text-center text-sm lg:inline-block">{now}</span>
 
-        <div className="relative">
-          <button
+        <div className="relative flex h-8 w-8 shrink-0 items-center justify-center">
+          <Button
             type="button"
+            variant="outline"
+            size="icon"
+            aria-label={`Notifications${unread > 0 ? `, ${unread} unread` : ""}`}
             onClick={() => setOpenBell((v) => !v)}
-            className="relative flex h-8 w-8 items-center justify-center rounded-sm border border-border text-muted-foreground transition-colors hover:text-foreground"
+            className="relative h-8 w-8 rounded-sm border-border text-muted-foreground shadow-none hover:text-foreground"
           >
             <Bell className="h-4 w-4" />
             {unread > 0 && (
-              <span className="metric absolute -top-1.5 -right-1.5 rounded-full bg-critical px-1 text-[9px] text-background">
+              <span className="metric absolute -top-1.5 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-critical px-1 text-[9px] leading-none text-primary-foreground">
                 {unread}
               </span>
             )}
-          </button>
+          </Button>
           {openBell && (
             <div className="panel absolute top-10 right-0 z-30 w-80 p-1">
               <div className="flex items-center justify-between px-2 py-1.5">
@@ -164,21 +173,22 @@ export default function TopBar() {
 
         <Link
           to="/copilot"
-          className="hidden items-center gap-1.5 rounded-sm border border-intel/40 bg-intel/10 px-2 py-1.5 font-mono text-[10px] tracking-[0.14em] text-intel uppercase md:flex"
+          className="hidden h-8 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-sm border border-intel/40 bg-intel/10 px-2 font-mono text-[10px] tracking-[0.14em] text-intel uppercase lg:flex"
         >
           <Bot className="h-3 w-3" /> ai system online
         </Link>
 
-        <div className="flex items-center gap-2 rounded-sm border border-border px-2 py-1">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-panel-raised">
+        <div className="flex h-8 shrink-0 items-center gap-2 rounded-sm border border-border px-1.5 lg:min-w-32 lg:px-2">
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-panel-raised">
             <UserRound className="h-3.5 w-3.5 text-muted-foreground" />
           </span>
-          <span className="hidden leading-tight lg:block">
-            <span className="block text-[12px]">M. Vjit</span>
-            <span className="block font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
+          <span className="hidden min-w-0 flex-1 leading-none lg:block">
+            <span className="block truncate whitespace-nowrap text-[12px]">M. Vjit</span>
+            <span className="mt-0.5 block truncate whitespace-nowrap font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
               city operations
             </span>
           </span>
+          <ChevronDown className="hidden h-3.5 w-3.5 shrink-0 text-muted-foreground lg:block" />
         </div>
       </div>
     </header>
