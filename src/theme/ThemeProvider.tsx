@@ -18,7 +18,7 @@ function applyTheme(theme: ThemePreference): ResolvedTheme {
   const root = document.documentElement;
   root.classList.toggle("dark", resolved === "dark");
   root.classList.toggle("light", resolved === "light");
-  root.dataset.theme = resolved;
+  root.dataset["theme"] = resolved;
   root.style.colorScheme = resolved;
   return resolved;
 }
