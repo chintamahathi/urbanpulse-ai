@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EdgeAiRouteImport } from './routes/edge-ai'
 import { Route as FleetRouteImport } from './routes/fleet'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EdgeAiRoute = EdgeAiRouteImport.update({
+  id: '/edge-ai',
+  path: '/edge-ai',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FleetRoute = FleetRouteImport.update({
@@ -25,27 +31,31 @@ const FleetRoute = FleetRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/edge-ai': typeof EdgeAiRoute
   '/fleet': typeof FleetRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/edge-ai': typeof EdgeAiRoute
   '/fleet': typeof FleetRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/edge-ai': typeof EdgeAiRoute
   '/fleet': typeof FleetRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/fleet'
+  fullPaths: '/' | '/edge-ai' | '/fleet'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/fleet'
-  id: '__root__' | '/' | '/fleet'
+  to: '/' | '/edge-ai' | '/fleet'
+  id: '__root__' | '/' | '/edge-ai' | '/fleet'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EdgeAiRoute: typeof EdgeAiRoute
   FleetRoute: typeof FleetRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/edge-ai': {
+      id: '/edge-ai'
+      path: '/edge-ai'
+      fullPath: '/edge-ai'
+      preLoaderRoute: typeof EdgeAiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fleet': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EdgeAiRoute: EdgeAiRoute,
   FleetRoute: FleetRoute,
 }
 export const routeTree = rootRouteImport
